@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Closure</title>
+</head>
+<body>
+   <a href="/ejercicios">Go back</a>
+   <p><em>Abre la consola</em></p>
+   <script>
+      // Closures
+      // IIFE
+      (() => {
+         let color = 'green';
+         function printColor() {
+            console.log(color);
+         }
+         printColor();
+      })()
+
+      // Funciones que regresan funciones
+      function makeColorPrinter(color) {
+         return message => {
+            console.log(`${message} ${color}`);
+         }
+      }
+
+      let messageWithGreen = makeColorPrinter('green');
+      messageWithGreen('Este es un mensaje');
+
+      // Variable privadas
+      let counter = {
+         count: 1,
+      }
+      counter.count++
+      console.log(counter.count);
+      function makeCounter(n) {
+         let count = n;
+         return {
+            increase: () => {
+               count++;
+            },
+            decrease: () => {
+               count--;
+            },
+            getCount: () => {
+               return count;
+            }
+         }
+      }
+
+      let counter2 = makeCounter(3);
+      console.log(counter2.count, 'Privada');
+      counter2.increase();
+      console.log(counter2.getCount());
+
+      // Nueva forma
+      class mkCounter {
+         #count;
+
+         constructor(n) {
+            this.#count = n;
+         }
+         get count() {
+            return this.#count;
+         }
+         // getCount() {
+         //    return this.#count;
+         // }
+         increase() {
+            this.#count++;
+         }
+         decrease(){
+            this.#count--;
+         }
+      }
+
+      let counter3 = new mkCounter(6);
+
+      counter3.count++;
+      console.log('incrementando privada', (counter3.count ));
+      counter3.increase();
+      console.log(counter3.count);
+
+   </script>
+</body>
+</html>
