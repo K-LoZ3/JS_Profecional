@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Prototype</title>
+</head>
+<body>
+   <a href="/ejercicios">Go back</a>
+   <p><em>Abre la consola</em></p>
+
+   <script>
+      // Un objeto comun y corriente
+      const zelda = {
+         name: 'Zelda',
+      }
+      zelda.saludar = function() {
+         console.log(`Hola soy ${this.name}`);
+      }
+      // Otro objeto mas
+      zelda.saludar();
+
+      const link = {
+         name: 'Link',
+      }
+      link.saludar = function() {
+         console.log(`Hola soy ${this.name}`);
+      }
+
+      link.saludar();
+
+      // Seamos un poco mas eficientes
+      function Hero(name) {
+         const hero = {
+            name: name
+         }
+
+         hero.saludar = function() {
+            console.log(`Hola soy ${this.name}`);
+         }
+
+         return hero
+      }
+
+      const batman =  Hero('Batman');
+      batman.saludar();
+
+      const superman = Hero('Superman');
+      superman.saludar();
+
+      // Aun podemos mejorar mas y evitar tener que crear la misma funcion cada vez
+      const heroMethods = {
+         saludar: function() {
+            console.log(`Hola soy ${this.name}`);
+         }
+      }
+
+      function HeroMejorado(name) {
+         const hero = {
+            name: name
+         }
+
+         hero.saludar = heroMethods.saludar;
+
+         return hero
+      }
+
+      const spiderman =  HeroMejorado('Spiderman');
+      spiderman.saludar();
+
+      const ironman = HeroMejorado('Ironman');
+      ironman.saludar();
+
+      // Object.create
+      // const nuevoObjeto Object.create(objeto);
+      const heroMethodsObject = {
+         saludar: function() {
+            console.log(`Hola soy ${this.name}`);
+         }
+      }
+
+      function HeroMejoradoObject(name) {
+         const hero = Object.create(heroMethodsObject);
+         hero.name = name;
+
+         return hero
+      }
+
+      const flash =  HeroMejoradoObject('Flash');
+      flash.saludar();
+
+      const tor = HeroMejoradoObject('Tor');
+      tor.saludar();
+
+      // Los metos de hero dentro de Hero
+      function HeroMejoradoObjectDentro(name) {
+         const hero = Object.create(HeroMejoradoObjectDentro.prototype);
+         hero.name = name;
+
+         return hero
+      }
+
+      HeroMejoradoObjectDentro.prototype.saludar = function() {
+         console.log(`Hola soy ${this.name}`);
+      }
+
+      const ann =  HeroMejoradoObjectDentro('Ann');
+      ann.saludar();
+
+      const mujerMaravilla = HeroMejoradoObjectDentro('Mujer Maravilla');
+      mujerMaravilla.saludar();
+
+      // new es un atajo (azucar sintactica) para llevar Hero.prototype al objeto
+      function HeroMejoradoObjectDentroNew(name) {
+         // const this = Object.create(HeroMejoradoObjectDentroNew.prototype); Se hace sola esta parte con dis gracias al 'new'.
+         this.name = name;
+         // return this No hace falta retornarlo gracias a 'new'.
+      }
+
+      HeroMejoradoObjectDentroNew.prototype.saludar = function() {
+         console.log(`Hola soy ${this.name}`);
+      }
+
+      const blackPanter =  new HeroMejoradoObjectDentroNew('Black Panter');
+      blackPanter.saludar();
+
+      const supergirl = new HeroMejoradoObjectDentroNew('Supergirl');
+      supergirl.saludar();
+
+      // Con class
+      class Sayayin {
+        constructor(nombre_sayo, objetivo) {
+          this.name = nombre_sayo
+          this.objetivo = objetivo
+        }
+
+        saludar() {
+          console.log(`Hola soy ${this.name}`)
+        }
+
+        destruir() {
+          console.log(`El objetivo de ${this.name} es destruir el planeta ${this.objetivo}`)
+        }
+
+      }
+
+      const goku = new Sayayin('Goku')
+      const vegeta = new Sayayin('Vegeta', 'Nameku')
+      const radix = new Sayayin('Radix', 'Tierra')
+
+      goku.saludar()
+      vegeta.saludar()
+      radix.saludar()
+
+      vegeta.destruir()
+      radix.destruir()
+
+      // O
+      class Heroe {
+         constructor(name) {
+            this.name = name;
+         }
+      
+         saludar = () => console.log(`Hola soy ${this.name}`);
+      }
+
+      const saitama = new Heroe('Saitama');
+      saitama.saludar();
+   </script>
+</body>
+</html>
