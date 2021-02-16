@@ -1,4 +1,10 @@
+import { getEnabledCategories } from 'trace_events';
+import mediaPlayer from '../mediaPlayer';
+
 class autoPause {
+   private  threshold: number;
+   player: mediaPlayer;
+
    constructor() {
       this.threshold = 0.25;
       this.handleIntersection = this.handleIntersection.bind(this);
@@ -7,6 +13,7 @@ class autoPause {
 
    run(player) {
       this.player = player;
+      
       const observer = new IntersectionObserver(this.handleIntersection, {
          threshold: this.threshold,
       });
@@ -16,13 +23,13 @@ class autoPause {
       document.addEventListener("visibilitychange", this.handleVisibilityChange);
    }
 
-   handleIntersection(entires) {
-      const entry = entires[0];
-
-      entry.intersectionRatio >= this.threshold? this.player.play() : this.player.pause();
+   private handleIntersection(entries: IntersectionObserverEntry[]) {
+      const entry = entries[0];
+      
+      entry.intersectionRatio >= this.threshold ? this.player.play() : this.player.pause();
    }
 
-   handleVisibilityChange() {
+   private handleVisibilityChange() {
       document.visibilityState === "visible"? this.player.play() : this.player.pause();
    }
 }
