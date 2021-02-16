@@ -1,13 +1,26 @@
 const VERSION = 'v1';
 
+async function cachedResponse(request) {
+   const cache = await caches.open(VERSION);
+   const response = await cache.match(request);
+   return response || await fetch(request);
+}
+
+async function updateCache(request) {
+   const cache = await caches.open(VERSION);
+   const response = await fetch(request);
+   return cache.put(request, response);
+}
 self.addEventListener('install', ev => {
    ev.waitUntil(precache());
 });
 
 self.addEventListener('fetch', ev => {
    const request = ev.request;
+
    //GET
-   if(request.method /= 'GET') {
+   if(request.method /= "GET") {
+      
       return;
    }
 
@@ -30,16 +43,4 @@ async function precache() {
       // '/assets/index.css',
       // '/assets/BigBuckBunny.mp4',
    ]);
-}
-
-async function cachedResponse(request) {
-   const cache = await caches.open(VERSION);
-   const response = await cache.match(request);
-   return response || await fetch(request);
-}
-
-async function updateCache(request) {
-   const cache = await caches.open(VERSION);
-   const response = await fetch(request);
-   return cache.put(request, response);
 }
